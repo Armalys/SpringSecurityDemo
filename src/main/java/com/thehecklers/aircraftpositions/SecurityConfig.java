@@ -13,10 +13,11 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final PasswordEncoder pwEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private final PasswordEncoder pwEncoder =
+            PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Bean
-    UserDetailsService autification() {
+    UserDetailsService authentication() {
         UserDetails peter = User.builder()
                 .username("peter")
                 .password(pwEncoder.encode("ppassword"))
@@ -26,16 +27,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails jodie = User.builder()
                 .username("jodie")
                 .password(pwEncoder.encode("jpassword"))
-                .roles("ADMIN")
+                .roles("USER", "ADMIN")
                 .build();
 
-        System.out.println("    >>> Peter`s password: " + peter.getPassword());
-        System.out.println("    >>> Jodie`s password: " + jodie.getPassword());
+        System.out.println("   >>> Peter's password: " + peter.getPassword());
+        System.out.println("   >>> Jodie's password: " + jodie.getPassword());
 
         return new InMemoryUserDetailsManager(peter, jodie);
     }
 
-    // Users authentication
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
