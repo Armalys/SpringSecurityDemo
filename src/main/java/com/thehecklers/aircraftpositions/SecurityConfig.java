@@ -5,21 +5,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class SecurityConfig {
+    private final PasswordEncoder pwEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
     @Bean
     UserDetailsService autification() {
         UserDetails peter = User.builder()
                 .username("peter")
-                .password("ppassword")
+                .password(pwEncoder.encode("ppassword"))
                 .roles("USER")
                 .build();
 
         UserDetails jodie = User.builder()
                 .username("jodie")
-                .password("jpassword")
+                .password(pwEncoder.encode("jpassword"))
                 .roles("USER")
                 .build();
 
